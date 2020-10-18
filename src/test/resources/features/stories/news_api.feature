@@ -13,19 +13,21 @@ Feature: The Stories Endpoint
     And the amount of stories matches the amount per +1DAY from the time series endpoint
 
   Scenario: Analise stories through time
-    Given John wants to know how the current volume of stories compares to the past:
+    Given John wants to see the current volume of stories:
       | title  | language | published_at.start | period |
       | corona | en       | NOW-30DAYS         | +1DAY  |
     And John can see a detailed list with the volume per +1DAY
 
-  #text: This parameter is used for finding stories whose title or body contains a specific keyword.
+  # The parameter 'text' is used for finding stories whose title or body contains a specific keyword.
   Scenario: Search by keyword
     When John retrieves the stories with the following details:
       | text            | language | published_at.start   | published_at.end     | per_page | cursor |
       | startup, corona | en       | 2020-10-10T15:25:43Z | 2020-10-10T16:25:43Z | 100      | *      |
     Then the selected keywords should appear in either the title or the body
 
-  Scenario: Requests should be blocked after the limit is reached
+ # This scenario is done in serie as Rest Assured was not done with the idea of concurrent tests in mind
+ # a much simpler solution could be implemented in JMeter running all the request in different threads.
+   Scenario: Requests should be blocked after the limit is reached
     Given John retrieves a story
     When he reaches his limit
     Then the request is blocked

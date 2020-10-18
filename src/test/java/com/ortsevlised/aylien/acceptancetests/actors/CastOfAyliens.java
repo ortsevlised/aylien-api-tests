@@ -1,6 +1,6 @@
 package com.ortsevlised.aylien.acceptancetests.actors;
 
-import com.ortsevlised.aylien.acceptancetests.stepdefinitions.TestEnvironment;
+import com.ortsevlised.aylien.acceptancetests.stepdefinitions.Environment;
 import net.serenitybdd.screenplay.Ability;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.actors.Cast;
@@ -14,16 +14,16 @@ import net.thucydides.core.util.EnvironmentVariables;
  */
 public class CastOfAyliens extends Cast {
 
-    private final TestEnvironment testEnvironment;
+    private final Environment environment;
 
     public CastOfAyliens(EnvironmentVariables environmentVariables) {
-        testEnvironment = new TestEnvironment(environmentVariables);
+        environment = new Environment(environmentVariables);
     }
 
     @Override
     public Actor actorNamed(String actorName, Ability... abilities) {
         Actor aylien = super.actorNamed(actorName, abilities);
-        aylien.can(CallAnApi.at(testEnvironment.getRestAPIBaseUrl()));
+        aylien.can(CallAnApi.at(environment.getRestAPIBaseUrl()));
         return aylien;
     }
 }

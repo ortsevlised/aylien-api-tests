@@ -1,4 +1,4 @@
-package com.ortsevlised.aylien.utils;
+package com.ortsevlised.aylien.helpers;
 
 
 import org.hamcrest.Matcher;

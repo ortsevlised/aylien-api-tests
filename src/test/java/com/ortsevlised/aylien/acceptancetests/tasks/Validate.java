@@ -1,6 +1,6 @@
-package com.ortsevlised.aylien.acceptancetests.questions;
+package com.ortsevlised.aylien.acceptancetests.tasks;
 
-import com.ortsevlised.aylien.utils.Matchers;
+import com.ortsevlised.aylien.helpers.Matchers;
 import io.restassured.path.json.JsonPath;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import static net.serenitybdd.screenplay.Tasks.instrumented;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
-import static org.junit.Assert.*;
 
 public class Validate implements Interaction {
     private final String values;
