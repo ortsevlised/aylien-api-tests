@@ -4,7 +4,7 @@ import com.ortsevlised.aylien.acceptancetests.tasks.View;
 import io.restassured.http.Headers;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.Response;
-import net.serenitybdd.screenplay.Performable;
+import net.serenitybdd.screenplay.AnonymousTask;
 import net.serenitybdd.screenplay.Task;
 import net.serenitybdd.screenplay.actors.OnStage;
 import net.serenitybdd.screenplay.rest.interactions.Get;
@@ -32,7 +32,7 @@ public class StoriesHelper {
     public static final String X_RATELIMIT_HIT_LIMIT = "x-ratelimit-hit-limit";
     public static final String AMOUNT_OF_STORIES = "amount of stories";
 
-    public static Performable getFirstPageOfStories(Map<String, String> storyParams) {
+    public static AnonymousTask getFirstPageOfStories(Map<String, String> storyParams) {
         return Task.where("{0} gets news stories",
                 Get.resource(Stories.path()).with(request -> {
                     request.queryParams(storyParams).and().headers(new Headers(RequestHeaders.authorisation())).log().uri();

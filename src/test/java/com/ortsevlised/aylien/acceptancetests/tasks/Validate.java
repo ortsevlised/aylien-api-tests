@@ -4,6 +4,7 @@ import com.ortsevlised.aylien.helpers.Matchers;
 import io.restassured.path.json.JsonPath;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
+import net.thucydides.core.annotations.Step;
 import org.hamcrest.Matcher;
 import org.jline.utils.Log;
 
@@ -36,7 +37,7 @@ public class Validate implements Interaction {
      * If the user wants to validate that the values for all the elements of the array in the response are the same he should indicate
      * "field.xxx is yyy", if he wants to check an specific element of the array he should indicate like "field[n].xxx is =yyy"
      */
-
+    @Step("{0} validates the response is correct")
     public <T extends Actor> void performAs(T actor) {
         String[] assertions = values.split(",|(and)");
         for (String assertion : assertions) {

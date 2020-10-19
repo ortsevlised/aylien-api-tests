@@ -2,6 +2,7 @@ package com.ortsevlised.aylien.acceptancetests.tasks;
 
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
+import net.thucydides.core.annotations.Step;
 
 import java.util.Map;
 
@@ -36,7 +37,7 @@ public class View implements Task {
         return instrumented(View.class, queryParams);
     }
 
-    @Override
+    @Step("{0} views the stories")
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(getFirstPageOfStories(queryParams));
         if (allPages) assertThat(allPages(queryParams).size()).isGreaterThan(0);

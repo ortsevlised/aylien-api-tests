@@ -34,7 +34,7 @@ public class StoriesDefinition {
     private static Map<String, String> params;
     private final JSON json = new JSON();
 
-    @Given("^(?:.*) retrieves the stories with the following details:$")
+    @Given("^(?:.*) retrieves all the stories with the following details:$")
     public void retrieve_stories(DataTable queryParams) {
         params = queryParams.asMaps().get(0); //Using asMaps.get(0) instead of asMap as there's seem to be a bug with the cucumber version
         John.attemptsTo(View.allStories().withThisParameters(params));
