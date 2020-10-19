@@ -35,7 +35,7 @@ public class StoriesHelper {
     public static AnonymousTask getFirstPageOfStories(Map<String, String> storyParams) {
         return Task.where("{0} gets news stories",
                 Get.resource(Stories.path()).with(request -> {
-                    request.queryParams(storyParams).and().headers(new Headers(RequestHeaders.authorisation())).log().uri();
+                    request.queryParams(storyParams).and().headers(new Headers(RequestHeaders.authorisation())).log().uri().then().response().log().all();
                     return request;
                 }));
     }
