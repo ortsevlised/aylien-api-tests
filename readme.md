@@ -8,12 +8,13 @@
  *The News API gathers articles in near real-time, and stores and indexes them along with metadata and enrichments, which you can search over.
    Real-time monitoring only works when you set sort_by parameter to published_at and sort_direction to desc.
    Newly published stories will be pulled every five minutes, to ensure you are only getting the most recent publications, rather than a repeat of what has come before.*
-  - If what it wants to be tested is that the api returns the latest news available from its sources, what could be done is a request to the external source for the latest new 
-  and then compare it to the Story endpoint using the source as a parameter filter.
+   
+  - If what it was intended to be tested is that the api returns the latest news available from its sources, what could be done is a request to the external source for the latest news and then compare it to the Story endpoint using the source as a parameter filter.
   This is not recommended though as we would be using an external resource, it would be best to mock it.
         
  ### Comparing results through time:
   - Information about how many stories were published was gathered using the Timeseries endpoint.
+  
 *AYLIEN’s Timeseries endpoint empowers us to do this. With this endpoint, we can track changes in quantitative values contained in stories over time. This information can be anything from mentions of a topic or entities, sentiment about a topic, or the volume of stories published by a source, to name but a few. 
 It is also much faster to pull aggregate Timeseries data then it is to query the stories endpoint and return individual stories in batches and subsequently process them to measure the occurrences of entities, sentiment etc. contained in each article. 
 In addition to retrieving stories themselves, the Time Series endpoint provides the count of stories published over time matching your parameters.*
