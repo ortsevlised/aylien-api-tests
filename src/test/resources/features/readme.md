@@ -18,6 +18,7 @@
 It is also much faster to pull aggregate Timeseries data then it is to query the stories endpoint and return individual stories in batches and subsequently process them to measure the occurrences of entities, sentiment etc. contained in each article. 
 In addition to retrieving stories themselves, the Time Series endpoint provides the count of stories published over time matching your parameters.*
 
+**I would suggest a dashboard monitoring this endpoint instead a test, it could be implemented collecting the data in influxDB and displaying it in grafana.**
  ### Search by Keywords:
  - A set of keywords were passed on the 'text' field of the request and then a check was done to validate that the keywords appear either in the title or the body of the story.
  *The parameter 'text' is used for finding stories whose title or body contains a specific keyword.*
