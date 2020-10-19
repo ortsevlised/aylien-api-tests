@@ -9,7 +9,7 @@ Feature: The Stories Endpoint
   Scenario: Fresh stories should be available
     When John retrieves all the stories with the following details:
       | language | published_at.start | published_at.end | per_page | cursor | sort_by      | sort_direction |
-      | en       | NOW-5MINUTES       | NOW              | 100      | *      | published_at | desc           |
+      | en       | NOW-6MINUTES       | NOW              | 100      | *      | published_at | desc           |
     And John gets a response where stories.language is en, stories.title is present,'published_at.start' is present and 'published_at.end' is present
 
   Scenario: Analise stories through time
