@@ -2,7 +2,7 @@
 
 ## Tests were created using Serenity BDD, Cucumber and RestAssured
 
-  ###Checking for fresh stories:
+  ### Checking for fresh stories:
   - Performed a keyword search using a time period of the last 5 minutes, simulating what's explained in the documentation for 'Real-time' monitoring:
   
  *The News API gathers articles in near real-time, and stores and indexes them along with metadata and enrichments, which you can search over.
@@ -12,7 +12,7 @@
   and then compare it to the Story endpoint using the source as a parameter filter.
   This is not recommended though as we would be using an external resource, it would be best to mock it.
         
- ###Comparing results through time:
+ ### Comparing results through time:
   - Information about how many stories were published was gathered using the Timeseries endpoint.
 *AYLIEN’s Timeseries endpoint empowers us to do this. With this endpoint, we can track changes in quantitative values contained in stories over time. This information can be anything from mentions of a topic or entities, sentiment about a topic, or the volume of stories published by a source, to name but a few. 
 It is also much faster to pull aggregate Timeseries data then it is to query the stories endpoint and return individual stories in batches and subsequently process them to measure the occurrences of entities, sentiment etc. contained in each article. 
