@@ -11,7 +11,7 @@ Feature: The Stories Endpoint
     When John retrieves all the stories with the following details:
       | language | published_at.start | published_at.end | per_page | cursor | sort_by      | sort_direction |
       | en       | NOW-6MINUTES       | NOW              | 100      | *      | published_at | desc           |
-    And John gets a response where stories.title notNullValue,'published_at.start' notNullValue and 'published_at.end' notNullValue
+    And John gets a response where stories.language is en, stories.title not "",'published_at.start' startsWith 2020 and 'published_at.end' startsWith 2020
 
   Scenario: Analise stories through time
     Given John wants to see the current volume of stories:

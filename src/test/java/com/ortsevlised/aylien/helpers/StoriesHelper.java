@@ -34,10 +34,10 @@ public class StoriesHelper {
 
     public static AnonymousTask getFirstPageOfStories(Map<String, String> storyParams) {
         return Task.where("{0} gets news stories",
-                Get.resource(Stories.path()).with(request -> {
-                    request.queryParams(storyParams).and().headers(new Headers(RequestHeaders.authorisation())).log().uri().then().response().log().all();
-                    return request;
-                }));
+                Get.resource(Stories.path()).with(request ->
+                        request.queryParams(storyParams)
+                                .with().headers(new Headers(RequestHeaders.authorisation()))
+                                .log().uri()));
     }
 
     /**
@@ -87,10 +87,10 @@ public class StoriesHelper {
         Instant start = Instant.now();
         long elapsedTime = 0;
 
-        while (xRateLimit > 0 && elapsedTime < 2) {
+        while (xRateLimit > 0 && elapsedTime < 2) {//Maybe i should wait until i reach the timer reset and count a minute from there, but too much hassle for a demo :D
             OnStage.theActorInTheSpotlight().attemptsTo(View.firstPageOfStories().withThisParameters(genericStory()));
             xRateLimit = Integer.parseInt(lastResponse().getHeaders().getValue(X_RATELIMIT_HIT_REMAINING));
-            Log.info("rate limit" + xRateLimit);
+            Log.info("rate limit " + xRateLimit);
             Instant finish = Instant.now();
             elapsedTime = Duration.between(start, finish).toMinutes();
         }

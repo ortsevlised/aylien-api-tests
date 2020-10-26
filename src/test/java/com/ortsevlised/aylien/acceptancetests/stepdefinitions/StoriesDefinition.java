@@ -46,7 +46,7 @@ public class StoriesDefinition {
         Stories stories = json.deserialize(pagesOfStories.get(0).prettify(), Stories.class);
         assertThat(stories.getStories().size()).isGreaterThan(0);
         assertThat(stories.getStories()).allMatch(
-                story -> story.getTitle().toLowerCase().contains(this.params.get("title"))
+                story -> story.getTitle().toLowerCase().contains(params.get("title"))
         );
     }
 
@@ -59,7 +59,7 @@ public class StoriesDefinition {
             John.wasAbleTo(Validate.thatThe(expectedValues).areInThe(stories));
             totalStories += stories.getInt("stories.size()");
         }
-        John.remember(AMOUNT_OF_STORIES, totalStories);
+        John.remember(AMOUNT_OF_STORIES, totalStories);// just in case I want to use it to compare it later
     }
 
 
@@ -74,7 +74,7 @@ public class StoriesDefinition {
     }
 
     @And("^the amount of stories matches the amount per (.*) from the time series endpoint$")
-    public void amount_of_stories_should_match_amount_in_timeseries_endpoitn(String period) {
+    public void amount_of_stories_should_match_amount_in_time_series_endpoint(String period) {
         John.recall(AMOUNT_OF_STORIES);
         HashMap<String, String> story = new HashMap<>(params); //Story is immutable so I create a new map
         story.put("period", period);

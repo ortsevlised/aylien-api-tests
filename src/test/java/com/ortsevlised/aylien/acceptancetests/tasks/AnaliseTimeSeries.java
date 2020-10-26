@@ -14,10 +14,11 @@ public class AnaliseTimeSeries {
 
     public static Performable forThis(Map<String, String> story) {
         return Task.where("{0} gets the time-series count",
-                Get.resource(TimeSeries.path()).with(request -> {
-                            request.queryParams(story).and().headers(new Headers(RequestHeaders.authorisation())).log().uri().then().statusCode(200);
-                            return request;
-                        }
+                Get.resource(TimeSeries.path()).with(request ->
+                        request.queryParams(story)
+                                .with().headers(new Headers(RequestHeaders.authorisation()))
+                                .then().statusCode(200)
+                                .request().log().uri()
                 ));
     }
 }

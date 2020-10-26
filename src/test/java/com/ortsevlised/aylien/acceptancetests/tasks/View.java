@@ -4,16 +4,17 @@ import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Task;
 import net.thucydides.core.annotations.Step;
 
+import java.util.Collections;
 import java.util.Map;
 
-import static com.ortsevlised.aylien.helpers.StoriesHelper.allPages;
-import static com.ortsevlised.aylien.helpers.StoriesHelper.getFirstPageOfStories;
+import static com.ortsevlised.aylien.helpers.StoriesHelper.*;
+import static net.serenitybdd.rest.SerenityRest.lastResponse;
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 import static org.assertj.core.api.Assertions.assertThat;
 
 public class View implements Task {
 
-    private static Map<String, String> queryParams;
+    private Map<String, String> queryParams;
     private static boolean allPages;
 
     public View(Map<String, String> queryParams) {
@@ -40,6 +41,7 @@ public class View implements Task {
     @Step("{0} views the stories")
     public <T extends Actor> void performAs(T actor) {
         actor.attemptsTo(getFirstPageOfStories(queryParams));
+        actor.remember(THE_LIST_OF_STORIES, Collections.singletonList(lastResponse().jsonPath()));
         if (allPages) assertThat(allPages(queryParams).size()).isGreaterThan(0);
     }
 }
