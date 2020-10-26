@@ -33,5 +33,4 @@ public class SettingTheStage {
     public Actor actor(String name) {
         return OnStage.theActorCalled(name);
     }
-
 }

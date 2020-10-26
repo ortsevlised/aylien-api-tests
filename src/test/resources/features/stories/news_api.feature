@@ -1,3 +1,4 @@
+@This
 Feature: The Stories Endpoint
   The most granular data point we can extract from the News API is a story,
   all other endpoints are aggregations or extrapolations of stories.
@@ -10,7 +11,7 @@ Feature: The Stories Endpoint
     When John retrieves all the stories with the following details:
       | language | published_at.start | published_at.end | per_page | cursor | sort_by      | sort_direction |
       | en       | NOW-6MINUTES       | NOW              | 100      | *      | published_at | desc           |
-    And John gets a response where stories.language is en, stories.title is present,'published_at.start' is present and 'published_at.end' is present
+    And John gets a response where stories.title notNullValue,'published_at.start' notNullValue and 'published_at.end' notNullValue
 
   Scenario: Analise stories through time
     Given John wants to see the current volume of stories:

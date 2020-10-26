@@ -17,7 +17,6 @@ public class Environment {
                 .orElse("https://api.aylien.com/news/");
     }
 
-
     public String getApiAppID() {
         return EnvironmentSpecificConfiguration.from(environmentVariables).getOptionalProperty("app.id")
                 .orElse("some default id");

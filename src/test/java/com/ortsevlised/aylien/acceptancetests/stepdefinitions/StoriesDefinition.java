@@ -87,7 +87,7 @@ public class StoriesDefinition {
         assertThat(pagesOfStories.size()).isGreaterThan(0);
         pagesOfStories.forEach(page ->
                 page.getList("stories").forEach(story ->
-                        assertThat(isTheKeywordPresent((HashMap) story)).isTrue()));
+                        assertThat(isTheKeywordPresent((HashMap<String, Object>) story)).isTrue()));
     }
 
     @Given("^(?:.*) retrieves a story$")

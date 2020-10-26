@@ -1,18 +1,17 @@
 package com.ortsevlised.aylien.acceptancetests.tasks;
 
-import com.ortsevlised.aylien.helpers.Matchers;
 import io.restassured.path.json.JsonPath;
 import net.serenitybdd.screenplay.Actor;
 import net.serenitybdd.screenplay.Interaction;
 import net.thucydides.core.annotations.Step;
-import org.hamcrest.Matcher;
 import org.jline.utils.Log;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 
+import static com.ortsevlised.aylien.helpers.Matchers.performAssertion;
 import static net.serenitybdd.screenplay.Tasks.instrumented;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.notNullValue;
@@ -39,48 +38,9 @@ public class Validate implements Interaction {
      */
     @Step("{0} validates the response is correct")
     public <T extends Actor> void performAs(T actor) {
-        String[] assertions = values.split(",|(and)");
-        for (String assertion : assertions) {
-            List<String> listOfChecksToPerform = Arrays.asList(assertion.trim().split(" ", 3));
-            do {
-                loopThroughResponseAndCheck(listOfChecksToPerform);
-            } while (!breakingCondition);
-        }
-    }
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    void loopThroughResponseAndCheck(List<String> listOfChecksToPerform) {
-        String path = listOfChecksToPerform.get(0);
-        Object responseObject = response.get(path);
-        assertThat(path + " shouldn't be null", responseObject, notNullValue());
-        if (responseObject instanceof ArrayList) {
-            ArrayList<Object> responseList = (ArrayList) responseObject;
-            if (responseList.size() == 0) {
-                throw new RuntimeException("The response was empty");
-            } else {
-                for (Object resp : responseList) {
-                    validation(listOfChecksToPerform, resp);
-                    breakingCondition = responseList.get(0) instanceof String || responseList.get(0) instanceof Integer || responseList.get(0) instanceof Boolean;
-                }
-            }
-        } else if (responseObject instanceof String || responseObject instanceof Integer || responseObject instanceof Boolean || responseObject instanceof HashMap) {
-            validation(listOfChecksToPerform, responseObject);
-            breakingCondition = true;
-        }
-    }
-
-
-    @SuppressWarnings({"rawtypes", "unchecked"})
-    private void validation(List<String> check, Object actual) {
-        assertThat("The field " + check.get(0) + " is present", actual, notNullValue());
-        if (!check.get(2).equalsIgnoreCase("present")) {
-            if (check.get(2).equalsIgnoreCase("empty")) {
-                check.set(2, "");
-            }
-            String condition = check.get(0) + " " + check.get(1) + " " + check.get(2);
-            Log.debug("Checking that:: " + condition);
-            Matcher<String> getMatcher = Matchers.switchMatchers(check.get(1), check.get(2));
-            assertThat(condition, actual.toString().trim().toLowerCase(), getMatcher);
+        for (String assertion : getAssertions()) {
+            do loopThroughResponseAndCheck(listOfChecks(assertion));
+            while (!breakingCondition);
         }
     }
 
@@ -95,4 +55,83 @@ public class Validate implements Interaction {
             return instrumented(Validate.class, values, response);
         }
     }
+
+    /**
+     * Loops through the list of checks passed and starts the validation process
+     * in each one of them
+     *
+     * @param listOfChecks a list containing the path, the comparator and the expected value
+     *                     for the assertion
+     */
+    private void loopThroughResponseAndCheck(List<String> listOfChecks) {
+        String path = listOfChecks.get(0);
+        Object responseObject = response.get(path);
+        assertThat(path + " shouldn't be null", responseObject, notNullValue());
+        try {
+            startValidation(listOfChecks, responseObject);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Depending on the type of the response object will perform different actions
+     *
+     * @param listOfChecksToPerform the actions to perform
+     * @param responseObject        the response from the request
+     * @param <T>                   the type
+     */
+    private <T> void startValidation(List<String> listOfChecksToPerform, T responseObject) throws ClassNotFoundException, NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        if (responseObject instanceof ArrayList) {
+            validateInArray(listOfChecksToPerform, (ArrayList) responseObject);
+        } else //if (responseObject instanceof String || responseObject instanceof Integer || responseObject instanceof Boolean || responseObject instanceof HashMap) {
+        //TODO check what happens with hashmap
+        {
+            performAssertion(listOfChecksToPerform, responseObject.toString());
+        }
+        breakingCondition = true;
+    }
+
+    /**
+     * Validates the response is not empty and loops through the array till object is
+     * instance of String, Integer or Boolean
+     *
+     * @param listOfChecksToPerform
+     * @param responseObject
+     */
+    private <T> void validateInArray(List<String> listOfChecksToPerform, ArrayList<T> responseObject) throws ClassNotFoundException, NoSuchMethodException, IllegalAccessException, InvocationTargetException {
+        if (responseObject.size() == 0) {
+            throw new RuntimeException("The response was empty");
+        } else {
+            for (Object resp : responseObject) {
+                performAssertion(listOfChecksToPerform, resp.toString());
+                breakingCondition = breakingCondition(responseObject);
+            }
+        }
+    }
+
+    private <T> boolean breakingCondition(ArrayList<T> responseList) {
+        return responseList.get(0) instanceof String || responseList.get(0) instanceof Integer || responseList.get(0) instanceof Boolean;
+    }
+
+    /**
+     * Receives the check to perform
+     *
+     * @param assertion
+     * @return a list with the field to check, the comparator and the expected value
+     */
+    private List<String> listOfChecks(String assertion) {
+        return Arrays.asList(assertion.trim().split(" ", 3));
+    }
+
+    /**
+     * Separates the string passed by ',' or 'and'
+     *
+     * @return the assertions to perform
+     */
+    private String[] getAssertions() {
+        return values.split(",|(and)");
+    }
+
+
 }
